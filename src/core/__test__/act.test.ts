@@ -3,6 +3,7 @@ import {Character} from "../character";
 import {DieType} from "../types/dice";
 import {CardType} from "../types/cardType";
 import * as clashModule from "../clash";
+import {ClashWin} from "../types/clashReport";
 
 const clashSpy = jest.spyOn(clashModule, 'clash')
 
@@ -66,11 +67,17 @@ describe('Act', ()=>{
 
         act.assignEnemyCards();
         act.setCardAndTarget(0, 0, slash)
-        act.play()
+        const clashes = act.play()
         expect(clashSpy).toHaveBeenCalled()
         const [dieA, dieB] = clashSpy.mock.calls[0];
         expect(dieA.dieRoll).toBe(5);
         expect(dieB).toBeUndefined();
+
+        expect(clashes).toHaveLength(1);
+        expect(clashes[0].tie).toBeFalsy();
+        const clash = clashes[0] as ClashWin;
+        expect(clash.hpDamage).toBe(5);
+        expect(clash.staggerDamage).toBe(5);
     })
 
 

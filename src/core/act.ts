@@ -4,6 +4,7 @@ import {randDie, randInt} from "./utils";
 import {TargetedDie} from "./types/dice";
 import {enemyIndex, playerIndex, UniversalIndex} from "./types/universalIndex";
 import {clash} from "./clash";
+import {ClashReport} from "./types/clashReport";
 
 export default class Act {
     players: Character[];
@@ -64,6 +65,8 @@ export default class Act {
 
         const dieQueue = playerDice.concat(enemyDice)
 
+        const clashes: ClashReport[] = [];
+
         while (dieQueue.length > 0) {
             const currentDie = dieQueue.shift();
             if (currentDie.used) continue;
@@ -72,12 +75,14 @@ export default class Act {
             const counter = dieQueue
                 .find(die => die.owner.equals(currentDie.target) && !die.used)
 
-            clash(currentDie, counter)
+            clashes.push(clash(currentDie, counter));
 
             if (counter) {
                 counter.used = true;
             }
         }
+
+        return clashes;
     }
 
     getCharacter(universalIndex: UniversalIndex){
