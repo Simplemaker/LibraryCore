@@ -1,3 +1,4 @@
+import {UniversalIndex} from "./universalIndex";
 
 export enum DieType {
     SLASH, PIERCE, BLUNT, BLOCK, EVADE, COUNTER
@@ -9,7 +10,11 @@ export type Die = {
     max: number;
 }
 
-export type RolledDie = {
+export type TargetedDie = {
+    owner: UniversalIndex;
+    target: UniversalIndex;
+    dieRoll: number;
     type: DieType;
-    roll: number;
+    used: boolean;
+    speed: number;
 }

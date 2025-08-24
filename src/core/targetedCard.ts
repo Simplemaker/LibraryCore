@@ -1,13 +1,7 @@
 import {CardType} from "./types/cardType";
+import {UniversalIndex} from "./types/universalIndex";
 
 
-export class TargetedCard {
-    private cardType: CardType;
-    private target: number;
-
-
-    constructor(cardType: CardType, target: number) {
-        this.cardType = cardType;
-        this.target = target;
-    }
+export type TargetedCard = CardType & {
+    target: UniversalIndex;
 }

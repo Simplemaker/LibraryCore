@@ -1,12 +1,14 @@
 import {CardType} from "./types/cardType";
 import {CharacterType} from "./types/characterType";
 import {TargetedCard} from "./targetedCard";
+import {UniversalIndex} from "./types/universalIndex";
+import {randDie} from "./utils";
 
 export class Character {
     cardDeck: CardType[];
     type: CharacterType;
     hp: number;
-    dieRoll: number;
+    speedRoll: number;
     stagger: number;
     selection?: TargetedCard;
 
@@ -19,11 +21,13 @@ export class Character {
     }
 
     roll() {
-        this.dieRoll = Math.floor(Math.random() * (1 + this.type.speedMax - this.type.speedMin)) + this.type.speedMin;
+        this.speedRoll = randDie(this.type.speedMin, this.type.speedMax)
     }
 
-    setSelection(card: CardType, target: number) {
+    setSelection(card: CardType, target: UniversalIndex) {
         // TODO verify card is in deck.
-        this.selection = new TargetedCard(card, target)
+        this.selection = {
+            ...card, target
+        }
     }
 }
